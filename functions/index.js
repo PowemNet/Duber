@@ -81,7 +81,7 @@ app.get('/webhook', (req, res) => {
       console.log('WEBHOOK_VERIFIED');
       res.status(200).send(challenge);
 
-      callGetStartedButtonApi();
+     
     } else {
       // Responds with '403 Forbidden' if verify tokens do not match
       res.sendStatus(403);      
@@ -93,12 +93,65 @@ function handleMessage(sender_psid, received_message) {
   let response;
   
   // Checks if the message contains text
-  if (received_message.text) {    
-    // Create the payload for a basic text message, which
-    // will be added to the body of our request to the Send API
-    response = {
-      "text": `You sent the message: "${received_message.text}". Now send me an attachment!`
+  if (received_message.text) {   
+    if(received_message.text==='Hi'){
+      response = {
+        "text": `Good see you again name! Post a question or type "menu" for more options.`
+      }
     }
+   else if(received_message.text==='Hello'){
+      response = {
+        "text": `Good see you again name! Post a question or type "menu" for more options.`
+      }
+    }
+
+    else if(received_message.text==='DONE'){
+      response = {
+        "attachment": {
+          "type": "template",
+          "payload": {
+            "template_type": "generic",
+            "elements": [{
+              "text": `Should I post the question ${received_message.text} on Duber? You can see all your posted questions when you type "menu"`,
+              "buttons": [
+                {
+                  "type": "postback",
+                  "title": "Yes please Duber!",
+                  "payload": "yesDuberPostQuestion",
+                },
+                {
+                  "type": "postback",
+                  "title": "Nope",
+                  "payload": "noDuberDontPostQuestion",
+                }
+              ],
+            }]
+          }
+        }
+      }
+    }
+
+    else {
+      response = {
+        "text": `Now select which tags to add to your question. type DONE when you're done selecting.`,
+        "quick_replies":[
+          {
+            "content_type":"text",
+            "type": "postback",
+            "title":"android",
+            "payload":"tag_android"
+          },
+          {
+            "content_type":"text",
+            "type": "postback",
+            "title":"iOS",
+            "payload":"tag_iOS"
+          }
+        ]
+      }
+    }
+
+   
   } else if (received_message.attachments) {
     // Get the URL of the message attachment
     let attachment_url = received_message.attachments[0].payload.url;
@@ -128,6 +181,12 @@ function handleMessage(sender_psid, received_message) {
       }
     }
   } 
+
+  else if(received_message.text==='Thanks'){
+    response = {
+      "text": `You flatter me :)`
+    }
+  }
   
   // Send the response message
   callSendAPI(sender_psid, response);    
@@ -144,7 +203,48 @@ function handlePostback(sender_psid, received_postback) {
     response = { "text": "Thanks!" }
   } else if (payload === 'no') {
     response = { "text": "Oops, try sending another image." }
+  } else if (payload === 'GET_STARTED_PAYLOAD') {
+
+    response = {
+      "attachment": {
+        "type": "template",
+        "payload": {
+          "template_type": "generic",
+          "elements": [{
+            "subtitle": "Hi Power, I'm an AI-based assistant for Duber. I can help you find answers to your programming questions.",
+            "buttons": [
+              {
+                "type": "postback",
+                "title": "Post a question",
+                "payload": "postQuestion",
+              }
+            ],
+          }]
+        }
+      }
+    }
+
   }
+  
+  else if (payload === 'postQuestion') {
+    response = { "text": "Type your question here.." }
+  }
+
+  else if (payload === 'tag_android'){
+    //todo: add tag to question
+  }
+
+  else if (payload === 'tag_iOS'){
+    //todo: add tag to question
+  }
+
+
+  else if (payload === 'noDuberDontPostQuestion') {
+    response = { "text": `Okay, type "menu" to see more options.` }
+  }else if (payload === 'yesDuberPostQuestion') {
+    response = { "text": `Great! I'll keep you updated` } //todo: call function for posting message(send users inboxes for now, with the question and its tags). In callback, let the fucntion update that it has posted the question
+  }
+
   // Send the message to acknowledge the postback
   callSendAPI(sender_psid, response);
 }
@@ -173,27 +273,31 @@ function callSendAPI(sender_psid, response) {
   }); 
 }
 
-function callGetStartedButtonApi() {
-  // Construct the message body
-  let request_body = {
-    "get_started":{
-      "payload":"<GET_STARTED_PAYLOAD>"
-    }
-  }
+//run this in ubutnu terminal or windows gitbash to set up the getting started button if it ever breaks: (alos getting started message)
+// //start:
 
-  // Send the HTTP request to the Messenger Platform
-  request({
-    "uri": "https://graph.facebook.com/v2.6/me/messages",
-    "qs": { "access_token": PAGE_ACCESS_TOKEN },
-    "method": "POST",
-    "json": request_body
-  }, (err, res, body) => {
-    if (!err) {
-      console.log('get startd button setup!')
-    } else {
-      console.error("Unable to set up get started button:" + err);
-    }
-  }); 
-}
+// curl -X POST -H "Content-Type: application/json" -d '{ 
+//   "get_started":{
+//     "payload":"GET_STARTED_PAYLOAD"
+//   }
+// }' "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=EAAcoX6Jo0z8BAEAzNjJJ65xTpc65k03ixlxSriZBEp0DNnkodcBBvZCZAk2VeA7sCnypsvZCeUsZBZCGqXDbE1wL9OCvc5FlG1LO5QQjdSLSiZAUicIi6d5DDHyiPKF0PPe2ujyMd8ei8YGUcxh4ZAlWct2v1HMjYEim0o99MhjHqQZDZD"
+
+// //end
+
+// //start:
+
+// curl -X POST -H "Content-Type: application/json" -d '{ 
+//   "greeting":[
+//     {
+//       "locale":"default",
+//       "text":"Tap Get Started and let Duber fix your programming bug!"
+//     }, {
+//       "locale":"en_US",
+//       "text":"Tap Get Started and let Duber fix your programming bug!"
+//     }
+//   ]
+// }' "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=EAAcoX6Jo0z8BAEAzNjJJ65xTpc65k03ixlxSriZBEp0DNnkodcBBvZCZAk2VeA7sCnypsvZCeUsZBZCGqXDbE1wL9OCvc5FlG1LO5QQjdSLSiZAUicIi6d5DDHyiPKF0PPe2ujyMd8ei8YGUcxh4ZAlWct2v1HMjYEim0o99MhjHqQZDZD"
+
+//end
 
 exports.app = functions.https.onRequest(app);
