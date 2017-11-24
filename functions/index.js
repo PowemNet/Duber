@@ -133,17 +133,15 @@ function handleMessage(sender_psid, received_message) {
 
     else {
       response = {
-        "text": `Now select which tags to add to your question. type DONE when you're done selecting.`,
+        // "text": `Now select which tags to add to your question. type DONE when you're done selecting.`,
         "quick_replies":[
           {
             "content_type":"text",
-            "type": "postback",
             "title":"android",
             "payload":"tag_android"
           },
           {
             "content_type":"text",
-            "type": "postback",
             "title":"iOS",
             "payload":"tag_iOS"
           }
@@ -211,7 +209,8 @@ function handlePostback(sender_psid, received_postback) {
         "payload": {
           "template_type": "generic",
           "elements": [{
-            "subtitle": "Hi Power, I'm an AI-based assistant for Duber. I can help you find answers to your programming questions.",
+            "title":"Hi Power!",
+            "subtitle": "I'm an AI-based assistant for Duber. I can help you find answers to your programming questions.",
             "buttons": [
               {
                 "type": "postback",
