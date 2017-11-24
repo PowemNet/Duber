@@ -32,13 +32,14 @@ We need to:
 -Make the thing work to completion.
 
 ### Contribution guidelines ###
-
+-You may need to install this Trello card numbers chrom add on:
+https://chrome.google.com/webstore/detail/trello-card-numbers/kadpkdielickimifpinkknemjdipghaf/related?hl=en
 -Find tasks in Trello
--Branch of the develop branch and name the branch accroding to the Trello Task #
+-Branch off the develop branch and name the branch accroding to the Trello Task #
 -When done with the task/story, submit a pull request to develop.
 -If we have a feature, we'll merge from develop to master branch
 
 ### Who do I talk to? ###
 
--p.mukisa@powem.net
--vivianmondi@gmail.com
+our general slack channel is here:
+https://powem.slack.com/messages/C3L4CTQQ3/
