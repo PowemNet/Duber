@@ -9,7 +9,8 @@ A helper-dev is then alerted, and can accept the request to help. One the connec
 needy-dev's screen.
 
 ### Architecture and how to get started ###
-Duber uses facebook messenger and firebase.
+Duber uses facebook messenger and firebase. 
+The flow can be found here : https://www.lucidchart.com/documents/edit/b8eccf7a-daf5-47f3-9d7d-349f05745f99/0
 When a user searches for the duber bot and finds it via facebook messenger, they can start messaging it.
 Duber Facebook page: https://www.facebook.com/duberbot/
 When a message is sent to the bot, Facebook's graphAPI send the message to a webhook, hosted on firebase.
