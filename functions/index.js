@@ -227,8 +227,8 @@ function handlePostback(sender_psid, received_postback) {
   }
   
   else if (payload === 'PAYLOAD_COMPLETE_MY_PROFILE') {
-    //show profile page here
-    response = { "text": "Type your question here.." }
+    //todo: show profile page here
+    response = { "text": "Hold up I'm designing a page you can use to complete your profile :) Give me two days jeez!" }
   }
 
   else if (payload === 'tag_android'){
