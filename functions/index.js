@@ -3,7 +3,6 @@ const functions = require('firebase-functions');
 'use strict';
 // const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN; //todo: save this as an environment variable
 const PAGE_ACCESS_TOKEN = 'EAAcoX6Jo0z8BALZCJvcRAGzKZCbTxWgong2iBOOg7DR5U9heEmzAM3ThHRLpuYda3BZAv4m3DHUg17LNjTHTROTXPcq1AdLcB2sBXfA43vabKPq3wGojaF08mRZCDoHLEh2m0blt4ZC5ac10PIrNltjJ7PxybIb2qSjBxvbfZCbzehoXrgGK4M';
-
 const 
   request = require('request'),
   express = require('express'),
@@ -97,8 +96,7 @@ function handleMessage(sender_psid, received_message) {
         "text": `Good to see you {{user_first_name}}! Checkout the options below:`
       }
     }
-  
-  // Send the response message
+  }  
   callSendAPI(sender_psid, response);    
 }
 
