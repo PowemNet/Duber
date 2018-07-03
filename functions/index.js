@@ -1,16 +1,9 @@
 const functions = require('firebase-functions');
-// const express = require ('express');
-
-// const app = express();
-// app.get('/webhook',(request,response)=>{
-// 	response.send('Hi Power!');
-// });
-
 
 'use strict';
-// const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN; //TODO POWER: save this as an environment variable
+// const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN; //todo: save this as an environment variable
 const PAGE_ACCESS_TOKEN = 'EAAcoX6Jo0z8BALZCJvcRAGzKZCbTxWgong2iBOOg7DR5U9heEmzAM3ThHRLpuYda3BZAv4m3DHUg17LNjTHTROTXPcq1AdLcB2sBXfA43vabKPq3wGojaF08mRZCDoHLEh2m0blt4ZC5ac10PIrNltjJ7PxybIb2qSjBxvbfZCbzehoXrgGK4M';
-// Imports dependencies and set up http server
+
 const 
   request = require('request'),
   express = require('express'),
