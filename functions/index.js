@@ -104,88 +104,6 @@ function handleMessage(sender_psid, received_message) {
         "text": `Good to see you {{user_first_name}}! Checkout the options below:`
       }
     }
-
-    // else if(received_message.text==='DONE'){
-    //   response = {
-    //     "attachment": {
-    //       "type": "template",
-    //       "payload": {
-    //         "template_type": "generic",
-    //         "elements": [{
-    //           "text": `Should I post the question ${received_message.text} on Duber? You can see all your posted questions when you type "menu"`,
-    //           "buttons": [
-    //             {
-    //               "type": "postback",
-    //               "title": "Yes please Duber!",
-    //               "payload": "yesDuberPostQuestion",
-    //             },
-    //             {
-    //               "type": "postback",
-    //               "title": "Nope",
-    //               "payload": "noDuberDontPostQuestion",
-    //             }
-    //           ],
-    //         }]
-    //       }
-    //     }
-    //   }
-    // }
-// 
-    // else {
-    //   response = {
-    //     // "text": `Now select which tags to add to your question. type DONE when you're done selecting.`,
-    //     "quick_replies":[
-    //       {
-    //         "content_type":"text",
-    //         "title":"android",
-    //         "payload":"tag_android"
-    //       },
-    //       {
-    //         "content_type":"text",
-    //         "title":"iOS",
-    //         "payload":"tag_iOS"
-    //       }
-    //     ]
-    //   }
-    // }
-
-   
-  } 
-  // else if (received_message.attachments) {
-  //   // Get the URL of the message attachment
-  //   let attachment_url = received_message.attachments[0].payload.url;
-  //   response = {
-  //     "attachment": {
-  //       "type": "template",
-  //       "payload": {
-  //         "template_type": "generic",
-  //         "elements": [{
-  //           "title": "Is this the right picture?",
-  //           "subtitle": "Tap a button to answer.",
-  //           "image_url": attachment_url,
-  //           "buttons": [
-  //             {
-  //               "type": "postback",
-  //               "title": "Yes!",
-  //               "payload": "yes",
-  //             },
-  //             {
-  //               "type": "postback",
-  //               "title": "No!",
-  //               "payload": "no",
-  //             }
-  //           ],
-  //         }]
-  //       }
-  //     }
-  //   }
-  // } 
-
-  // else if(received_message.text==='Thanks'){
-  //   response = {
-  //     "text": `You flatter me :)`
-  //   }
-  // }
   
   // Send the response message
   callSendAPI(sender_psid, response);    
@@ -229,21 +147,6 @@ function handlePostback(sender_psid, received_postback) {
   else if (payload === 'PAYLOAD_COMPLETE_MY_PROFILE') {
     //todo: show profile page here
     response = { "text": "Hold up I'm designing a page you can use to complete your profile :) Give me two days jeez!" }
-  }
-
-  else if (payload === 'tag_android'){
-    //todo: add tag to question
-  }
-
-  else if (payload === 'tag_iOS'){
-    //todo: add tag to question
-  }
-
-
-  else if (payload === 'noDuberDontPostQuestion') {
-    response = { "text": `Okay, type "menu" to see more options.` }
-  }else if (payload === 'yesDuberPostQuestion') {
-    response = { "text": `Great! I'll keep you updated` } //todo: call function for posting message(send users inboxes for now, with the question and its tags). In callback, let the fucntion update that it has posted the question
   }
 
   // Send the message to acknowledge the postback
