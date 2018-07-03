@@ -273,5 +273,25 @@ function callSendAPI(sender_psid, response) {
     }
   }); 
 }
+function getUsername(sender_psid){
+  var userPublicProfile = "https://graph.facebook.com/v2.6/" + sender_psid + "?fields=first_name,last_name,profile_pic&access_token="+ PAGE_ACCESS_TOKEN;
+  let username;
+
+  request({
+    'url': userPublicProfile,
+    'json': true
+  }, function (err, response, body){
+    if(!err && response.statusCode === 200){
+      console.log("Username is : " + body.first_name);
+      username = body.first_name;
+      console.log("Return value "+ username)
+      return username;
+    }
+    else {
+      console.log("Failed to fetch username " + err );
+    }
+
+  });
+}
 
 exports.app = functions.https.onRequest(app);
