@@ -96,12 +96,12 @@ function handleMessage(sender_psid, received_message) {
   if (received_message.text) {   
     if(received_message.text==='Hi'){
       response = {
-        "text": `Good to see you again name! Post a question or type "menu" for more options.`
+        "text": `Good to see you {{user_first_name}}! Checkout the options below:`
       }
     }
    else if(received_message.text==='Hello'){
       response = {
-        "text": `Good to see you again name! Post a question or type "menu" for more options.`
+        "text": `Good to see you {{user_first_name}}! Checkout the options below:`
       }
     }
 
@@ -210,13 +210,13 @@ function handlePostback(sender_psid, received_postback) {
         "payload": {
           "template_type": "generic",
           "elements": [{
-            "title":"Hi Power!",
-            "subtitle": "I'm an AI-based assistant for Duber. I can help you find answers to your programming questions.",
+            "title":"Hi {{user_first_name}}!",
+            "subtitle": "I'm Duber. I can help you find people with answers to your questions.",
             "buttons": [
               {
                 "type": "postback",
-                "title": "Post a question",
-                "payload": "postQuestion",
+                "title": "Complete my Profile",
+                "payload": "PAYLOAD_COMPLETE_MY_PROFILE",
               }
             ],
           }]
@@ -226,7 +226,8 @@ function handlePostback(sender_psid, received_postback) {
 
   }
   
-  else if (payload === 'postQuestion') {
+  else if (payload === 'PAYLOAD_COMPLETE_MY_PROFILE') {
+    //show profile page here
     response = { "text": "Type your question here.." }
   }
 
