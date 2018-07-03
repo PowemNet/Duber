@@ -2,7 +2,7 @@
 
 ### What is Duber? ###
 
-Duber is a bot which helps devs get real time help when they have a problem. 
+Duber is a bot which helps people get REAL TIME immedaite help from REAL PEOPLE around the world. 
 
 This Dev-Uber (get it?) lets a needy-user submit questions.
 A helper-dev is then alerted, and can accept the request to help. One the connection is made, the helper-dev can see the 
