@@ -9,7 +9,7 @@ const functions = require('firebase-functions');
 
 'use strict';
 // const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN; //TODO POWER: save this as an environment variable
-const PAGE_ACCESS_TOKEN = 'EAAcoX6Jo0z8BAEAzNjJJ65xTpc65k03ixlxSriZBEp0DNnkodcBBvZCZAk2VeA7sCnypsvZCeUsZBZCGqXDbE1wL9OCvc5FlG1LO5QQjdSLSiZAUicIi6d5DDHyiPKF0PPe2ujyMd8ei8YGUcxh4ZAlWct2v1HMjYEim0o99MhjHqQZDZD';
+const PAGE_ACCESS_TOKEN = 'EAAcoX6Jo0z8BALZCJvcRAGzKZCbTxWgong2iBOOg7DR5U9heEmzAM3ThHRLpuYda3BZAv4m3DHUg17LNjTHTROTXPcq1AdLcB2sBXfA43vabKPq3wGojaF08mRZCDoHLEh2m0blt4ZC5ac10PIrNltjJ7PxybIb2qSjBxvbfZCbzehoXrgGK4M';
 // Imports dependencies and set up http server
 const 
   request = require('request'),
