@@ -4,21 +4,26 @@
 
 Duber is a bot which helps devs get real time help when they have a problem. 
 
-This Dev-Uber (get it?) lets a user choose to either receive question requests, or submit questions.
-If a dev has an issue, duber let's them post it with minimal interaction. The steps involve
--Do you want to post a question?
--What is the question?
--What is the topic?
+This Dev-Uber (get it?) lets a needy-user submit questions.
+A helper-dev is then alerted, and can accept the request to help. One the connection is made, the helper-dev can see the 
+needy-dev's screen.
 
-Wait until we find you a dev.
+### Architecture and how to get started ###
+Duber uses facebook messenger and firebase.
+When a user searches for the duber bot and finds it via facebook messenger, they can start messaging it.
+Duber Facebook page: https://www.facebook.com/duberbot/
+When a message is sent to the bot, Facebook's graphAPI send the message to a webhook, hosted on firebase.
+The firebase project can be found at : https://console.firebase.google.com/u/0/project/gorilla-app-41193/overview
 
-When a dev who is online accepts the request, Duber generates a link which enables the two devs to screeshare(because how else wil you debug?)
--When the link is clicked, the chrome desktop (or whichever other open source desktop sharing tool?) is launched.
--The dev who's helping the other dev also opens their link and can immdiately have a look at the dev-in-need (let's call him the "needy-dev")'s laptop.
--The dev whos's helping (let's call her the "helper-dev") can them edit the code or debug or whatever.
+To test the firebase project, 
+-clone the project and run `firebase use -add` then select the gorilla app
+-Make changes (most likfely to `index.js`) then save and run `firebase serve` to deploy the project functions locally
+-To deploy to a public url provided by firebase hosting, run `firebase deploy`
+-To test the live app, go to the facebook page and send a message to the bot. Note: You changed must have been deployed
+to the cloud with `firebase deploy` in order to test the live app.
+-To see logs from the firebase function which recives and sends messages to and from Facebook, see firebase logs at
+https://console.firebase.google.com/u/0/project/gorilla-app-41193/functions/logs?search=&severity=DEBUG
 
-After this process, the two parties can rate each other and Duber will use that for future reference: to Tell if any of these devs is just a fraud messing
-with us.
 
 ### How does it work now? ###
 
@@ -28,18 +33,12 @@ When a user sends Duber a message, the message is sent from the Facebook messagi
 ### What are the next steps? ###
 
 We need to:
--Stop reinventing the wheel and use tools like API.ai
--Make the thing work to completion.
+-Set up screen and audio sharing
 
 ### Contribution guidelines ###
--You may need to install this Trello card numbers chrom add on:
-https://chrome.google.com/webstore/detail/trello-card-numbers/kadpkdielickimifpinkknemjdipghaf/related?hl=en
--Find tasks in Trello
--Branch off the develop branch and name the branch accroding to the Trello Task #
--When done with the task/story, submit a pull request to develop.
--If we have a feature, we'll merge from develop to master branch
+Check guidlines here: https://docs.google.com/document/d/10LyidM2TZWy4n9bPDQHUwPN8xvtivFtUlVWNTUba3bk/edit
 
 ### Who do I talk to? ###
+powermukisa@gmail.com
 
-our general slack channel is here:
-https://powem.slack.com/messages/C3L4CTQQ3/
+Happy coding!
