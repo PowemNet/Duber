@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "duberbot"
+    "default": "duberbot",
+    "staging": "gorilla-app-41193"
   }
 }
