@@ -4,6 +4,7 @@
 </head>
 <body>
 <script>
+    const APP_ID = "2014716048757567";
     (function (d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) {
@@ -19,7 +20,7 @@
         MessengerExtensions.getSupportedFeatures(function success(result) {
             let features = result.supported_features;
             if (features.includes("context")) {
-                MessengerExtensions.getContext('<APP_ID>',
+                MessengerExtensions.getContext(APP_ID,
                     function success(thread_context) {
                         // success
                         document.getElementById("psid").value = thread_context.psid;

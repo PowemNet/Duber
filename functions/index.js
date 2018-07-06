@@ -25,7 +25,7 @@ app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 app.get('/', (request, response) => {
   response.render('index');
  });
- 
+
 // Accepts POST requests at /webhook endpoint
 app.post('/webhook', (req, res) => {
   // Parse the request body from the POST
@@ -80,24 +80,27 @@ app.get('/webhook', (req, res) => {
 });
 
 app.get('/profile', (req, res, next) => {
-  let referer = req.get('Referer');
-  if (referer) {
-      if (referer.indexOf('www.messenger.com') >= 0) {
-          res.setHeader('X-Frame-Options', 'ALLOW-FROM https://www.messenger.com/');
-      } else if (referer.indexOf('www.facebook.com') >= 0) {
-          res.setHeader('X-Frame-Options', 'ALLOW-FROM https://www.facebook.com/');
-      }
-      console.log ("Duber log: sending profile page");
-      res.render('profile');
-  }
+  // let referer = req.get('Referer');
+  // if (referer) {
+  //     if (referer.indexOf('www.messenger.com') >= 0) {
+  //         res.setHeader('X-Frame-Options', 'ALLOW-FROM https://www.messenger.com/');
+  //     } else if (referer.indexOf('www.facebook.com') >= 0) {
+  //         res.setHeader('X-Frame-Options', 'ALLOW-FROM https://www.facebook.com/');
+  //     }
+  //     console.log ("Duber log: sending profile page");
+  //     res.render('profile');
+  // }
+  res.render('profile');
 });
 
 app.get('/profilepostback', (req, res) => {
   //TODO make call to firebase to update user profile with data received from messenger
+  console.log("Duber logs: Sending reponse after user taps Submit Button in Set profile page");
   let body = req.query;
   let response = {
       // "text": `Great, I will book you a ${body.bed} bed, with ${body.pillows} pillows and a ${body.view} view.`
-      "text": `Great, I will only send you requests to do with option_1 option_2 and option_todo` //TODO use above live for reference
+      "text": `Great!, I have updated your profile. If your availability is on, 
+      you will receive Duber requests about the topics selected.` //TODO use above live for reference
   };
 
   res.status(200).send('Please close this window to return to the conversation thread.');
@@ -195,7 +198,7 @@ function setUserProfile(sender_psid) {
                   "type": "web_url",
                   "url": SERVER_URL + "/profile",
                   "title": "Set Profile",
-                  "webview_height_ratio": "tall",
+                  "webview_height_ratio": "compact",
                   "messenger_extensions": true
               }]
           }
