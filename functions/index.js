@@ -99,8 +99,7 @@ app.get('/profilepostback', (req, res) => {
   let body = req.query;
   let response = {
       // "text": `Great, I will book you a ${body.bed} bed, with ${body.pillows} pillows and a ${body.view} view.`
-      "text": `Great!, I have updated your profile. If your availability is on, 
-      you will receive Duber requests about the topics selected.` //TODO use above live for reference
+      "text": `Great!, I have updated your profile. If your availability is ON, you will receive Duber requests about the topics selected.` //TODO use above live for reference
   };
 
   res.status(200).send('Please close this window to return to the conversation thread.');
