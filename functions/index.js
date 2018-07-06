@@ -6,18 +6,26 @@ const PAGE_ACCESS_TOKEN = 'EAAcoX6Jo0z8BALZCJvcRAGzKZCbTxWgong2iBOOg7DR5U9heEmzA
 const 
   request = require('request'),
   express = require('express'),
+  engines = require('consolidate'),
   body_parser = require('body-parser')
 
 var app = express();
 app.set('port', process.env.PORT || 5000);
 app.use(body_parser.json());
-app.use(express.static('public'));
+app.engine('hbs', engines.handlebars);
+app.set('views', './public');
+app.set('view engine', 'hbs');
+app.use(express.static(__dirname + '/public'));
 
 const SERVER_URL = "https://gorilla-app-41193.firebaseapp.com";
 
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 
+app.get('/', (request, response) => {
+  response.render('index');
+ });
+ 
 // Accepts POST requests at /webhook endpoint
 app.post('/webhook', (req, res) => {
   // Parse the request body from the POST
@@ -79,8 +87,8 @@ app.get('/profile', (req, res, next) => {
       } else if (referer.indexOf('www.facebook.com') >= 0) {
           res.setHeader('X-Frame-Options', 'ALLOW-FROM https://www.facebook.com/');
       }
-      console.log ("sending profile page");
-      res.sendFile('public/profile.html', {root: __dirname});
+      console.log ("Duber log: sending profile page");
+      res.render('profile');
   }
 });
 
