@@ -6,14 +6,14 @@ const PAGE_ACCESS_TOKEN = 'EAAcoX6Jo0z8BALZCJvcRAGzKZCbTxWgong2iBOOg7DR5U9heEmzA
 const 
   request = require('request'),
   express = require('express'),
-  body_parser = require('body-parser'),
+  body_parser = require('body-parser')
 
 var app = express();
 app.set('port', process.env.PORT || 5000);
 app.use(body_parser.json());
 app.use(express.static('public'));
 
-const SERVER_URL = "gorilla-app-41193.firebaseapp.com";
+const SERVER_URL = "https://gorilla-app-41193.firebaseapp.com";
 
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
@@ -79,6 +79,7 @@ app.get('/profile', (req, res, next) => {
       } else if (referer.indexOf('www.facebook.com') >= 0) {
           res.setHeader('X-Frame-Options', 'ALLOW-FROM https://www.facebook.com/');
       }
+      console.log ("sending profile page");
       res.sendFile('public/profile.html', {root: __dirname});
   }
 });
@@ -159,7 +160,7 @@ function callSendAPI(sender_psid, response) {
     "message": response
   }
 
-  // Send the HTTP request to the Messenger Platform
+  console.log('Sending Message: ' + response.body);
   request({
     "uri": "https://graph.facebook.com/v2.6/me/messages",
     "qs": { "access_token": PAGE_ACCESS_TOKEN },
@@ -175,18 +176,19 @@ function callSendAPI(sender_psid, response) {
 }
 
 function setUserProfile(sender_psid) {
+  console.log("Duber log: In function: Set User Profile");
   let response = {
-      attachment: {
-          type: "template",
-          payload: {
-              template_type: "button",
-              text: "OK, let's set your Profile",
-              buttons: [{
-                  type: "web_url",
-                  url: SERVER_URL + "/profile",
-                  title: "Set Profile",
-                  webview_height_ratio: "tall",
-                  messenger_extensions: true
+      "attachment": {
+          "type": "template",
+          "payload": {
+              "template_type": "button",
+              "text": "OK, let's set your Profile",
+              "buttons": [{
+                  "type": "web_url",
+                  "url": SERVER_URL + "/profile",
+                  "title": "Set Profile",
+                  "webview_height_ratio": "tall",
+                  "messenger_extensions": true
               }]
           }
       }
