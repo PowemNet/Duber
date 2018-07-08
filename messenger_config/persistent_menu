@@ -1,8 +1,9 @@
 /*
 
--Not To be run again, unless there's a chaneg to the content in the paylod, which needs to be published to Messenger graphAPIonly.
+-Not To be run again, unless there's a change to the content in the paylod, which needs to be published to Messenger graphAPIonly.
 -Can be run using CURL or postman. 
 -This is kept here for reference sake.
+!!!Only run after consulting with Admin!!!
 
 */
 url: https://graph.facebook.com/v2.6/me/messenger_profile?access_token=EAAcoX6Jo0z8BALZCJvcRAGzKZCbTxWgong2iBOOg7DR5U9heEmzAM3ThHRLpuYda3BZAv4m3DHUg17LNjTHTROTXPcq1AdLcB2sBXfA43vabKPq3wGojaF08mRZCDoHLEh2m0blt4ZC5ac10PIrNltjJ7PxybIb2qSjBxvbfZCbzehoXrgGK4M

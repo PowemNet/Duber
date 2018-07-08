@@ -1,0 +1,61 @@
+<html>
+<head>
+    <title>Set your Profile</title>
+</head>
+<body>
+<script>
+    const APP_ID = "2014716048757567";
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'Messenger'));
+    window.extAsyncInit = () => {
+        // TODO: How to parse env file from here?
+        MessengerExtensions.getSupportedFeatures(function success(result) {
+            let features = result.supported_features;
+            if (features.includes("context")) {
+                MessengerExtensions.getContext(APP_ID,
+                    function success(thread_context) {
+                        // success
+                        document.getElementById("psid").value = thread_context.psid;
+                    },
+                    function error(err) {
+                        // error
+                        console.log(err);
+                    }
+                );
+            }
+        }, function error(err) {
+            // error retrieving supported features
+            console.log(err);
+        });
+        document.getElementById('submitButton').addEventListener('click', () => {
+            MessengerExtensions.requestCloseBrowser(function success() {
+                console.log("Webview closing");
+            }, function error(err) {
+                console.log(err);
+            });
+        });
+    };
+</script>
+<form action="/profilepostback" method="get">
+    <input type="hidden" name="psid" id="psid">
+    <h3>Expertise</h3>
+    <input type="radio" name="expertise" value="android" checked>Android<br>
+    <input type="radio" name="expertise" value="iOS">iOS<br>
+    <input type="radio" name="expertise" value="firebase">Firebase<br>
+    <input type="radio" name="expertise" value="messenger">Messenger<br>
+    <input type="radio" name="expertise" value="ionic">Ionic<br>
+    <h3>Availability</h3>
+    <input type="radio" name="availability" value="availabile" checked>Availabile to Accept requests<br>
+    <input type="radio" name="availability" value="not_availabile">Not Available to Accept Requests<br>
+    <input type="submit" value="Submit" id="submitButton">
+</form>
+</body>
+</html>

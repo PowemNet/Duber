@@ -6,46 +6,51 @@ const PAGE_ACCESS_TOKEN = 'EAAcoX6Jo0z8BALZCJvcRAGzKZCbTxWgong2iBOOg7DR5U9heEmzA
 const 
   request = require('request'),
   express = require('express'),
-  body_parser = require('body-parser'),
-  app = express().use(body_parser.json()); // creates express http server
+  engines = require('consolidate'),
+  body_parser = require('body-parser')
+
+var app = express();
+app.set('port', process.env.PORT || 5000);
+app.use(body_parser.json());
+app.engine('hbs', engines.handlebars);
+app.set('views', './public');
+app.set('view engine', 'hbs');
+app.use(express.static(__dirname + '/public'));
+
+const SERVER_URL = "https://gorilla-app-41193.firebaseapp.com";
 
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 
-// Accepts POST requests at /webhook endpoint
-app.post('/webhook', (req, res) => {  
+app.get('/', (request, response) => {
+  response.render('index');
+ });
 
+// Accepts POST requests at /webhook endpoint
+app.post('/webhook', (req, res) => {
   // Parse the request body from the POST
   let body = req.body;
-
   // Check the webhook event is from a Page subscription
   if (body.object === 'page') {
-
-    body.entry.forEach(function(entry) {
-
+    body.entry.forEach(function (entry) {
       // Gets the body of the webhook event
       let webhook_event = entry.messaging[0];
       console.log(webhook_event);
-
-
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;
       console.log('Sender ID: ' + sender_psid);
-
       // Check if the event is a message or postback and
       // pass the event to the appropriate handler function
       if (webhook_event.message) {
-        handleMessage(sender_psid, webhook_event.message);       
+        handleMessage(sender_psid, webhook_event.message);
       } else if (webhook_event.postback) {
-        
         handlePostback(sender_psid, webhook_event.postback);
       }
-      
     });
     // Return a '200 OK' response to all events
     res.status(200).send('EVENT_RECEIVED');
-
-  } else {
+  }
+  else {
     // Return a '404 Not Found' if event is not from a page subscription
     res.sendStatus(404);
   }
@@ -54,31 +59,51 @@ app.post('/webhook', (req, res) => {
 
 // Accepts GET requests at the /webhook endpoint
 app.get('/webhook', (req, res) => {
-  
   /** UPDATE YOUR VERIFY TOKEN **/
   const VERIFY_TOKEN = 'DUBERBOT_POWER_TOKEN';
-  
   // Parse params from the webhook verification request
   let mode = req.query['hub.mode'];
   let token = req.query['hub.verify_token'];
   let challenge = req.query['hub.challenge'];
-    
   // Check if a token and mode were sent
   if (mode && token) {
-  
     // Check the mode and token sent are correct
     if (mode === 'subscribe' && token === VERIFY_TOKEN) {
-      
       // Respond with 200 OK and challenge token from the request
       console.log('WEBHOOK_VERIFIED');
       res.status(200).send(challenge);
-
-     
     } else {
       // Responds with '403 Forbidden' if verify tokens do not match
       res.sendStatus(403);      
     }
   }
+});
+
+app.get('/profile', (req, res, next) => {
+  // let referer = req.get('Referer');
+  // if (referer) {
+  //     if (referer.indexOf('www.messenger.com') >= 0) {
+  //         res.setHeader('X-Frame-Options', 'ALLOW-FROM https://www.messenger.com/');
+  //     } else if (referer.indexOf('www.facebook.com') >= 0) {
+  //         res.setHeader('X-Frame-Options', 'ALLOW-FROM https://www.facebook.com/');
+  //     }
+  //     console.log ("Duber log: sending profile page");
+  //     res.render('profile');
+  // }
+  res.render('profile');
+});
+
+app.get('/profilepostback', (req, res) => {
+  //TODO make call to firebase to update user profile with data received from messenger
+  console.log("Duber logs: Sending reponse after user taps Submit Button in Set profile page");
+  let body = req.query;
+  let response = {
+      // "text": `Great, I will book you a ${body.bed} bed, with ${body.pillows} pillows and a ${body.view} view.`
+      "text": `Great!, I have updated your profile. If your availability is ON, you will receive Duber requests about the topics selected.` //TODO use above live for reference
+  };
+
+  res.status(200).send('Please close this window to return to the conversation thread.');
+  callSendAPI(body.psid, response);
 });
 
 function handleMessage(sender_psid, received_message) {
@@ -103,16 +128,9 @@ function handleMessage(sender_psid, received_message) {
 function handlePostback(sender_psid, received_postback) {
   console.log('ok')
    let response;
-  // Get the payload for the postback
   let payload = received_postback.payload;
 
-  // Set the response based on the postback payload
-  if (payload === 'yes') {
-    response = { "text": "Thanks!" }
-  } else if (payload === 'no') {
-    response = { "text": "Oops, try sending another image." }
-  } else if (payload === 'GET_STARTED_PAYLOAD') {
-
+if (payload === 'GET_STARTED_PAYLOAD') {
     response = {
       "attachment": {
         "type": "template",
@@ -136,8 +154,7 @@ function handlePostback(sender_psid, received_postback) {
   }
   
   else if (payload === 'PAYLOAD_COMPLETE_MY_PROFILE') {
-    //todo: show profile page here
-    response = { "text": "Hold up I'm designing a page you can use to complete your profile :) Give me two days jeez!" }
+    response = setUserProfile(sender_psid)
   }
 
   // Send the message to acknowledge the postback
@@ -153,7 +170,7 @@ function callSendAPI(sender_psid, response) {
     "message": response
   }
 
-  // Send the HTTP request to the Messenger Platform
+  console.log('Sending Message: ' + response.body);
   request({
     "uri": "https://graph.facebook.com/v2.6/me/messages",
     "qs": { "access_token": PAGE_ACCESS_TOKEN },
@@ -166,6 +183,28 @@ function callSendAPI(sender_psid, response) {
       console.error("Unable to send message:" + err);
     }
   }); 
+}
+
+function setUserProfile(sender_psid) {
+  console.log("Duber log: In function: Set User Profile");
+  let response = {
+      "attachment": {
+          "type": "template",
+          "payload": {
+              "template_type": "button",
+              "text": "OK, let's set your Profile",
+              "buttons": [{
+                  "type": "web_url",
+                  "url": SERVER_URL + "/profile",
+                  "title": "Set Profile",
+                  "webview_height_ratio": "compact",
+                  "messenger_extensions": true
+              }]
+          }
+      }
+  };
+
+  return response;
 }
 
 exports.app = functions.https.onRequest(app);
