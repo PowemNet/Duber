@@ -126,39 +126,60 @@ function handleMessage(sender_psid, received_message) {
 }
 
 function handlePostback(sender_psid, received_postback) {
+
   console.log('ok')
-   let response;
+  var userPublicProfile = "https://graph.facebook.com/v2.6/" + sender_psid + "?fields=first_name,last_name,profile_pic&access_token="+ PAGE_ACCESS_TOKEN;
+  let response;
   let payload = received_postback.payload;
 
-if (payload === 'GET_STARTED_PAYLOAD') {
-    response = {
-      "attachment": {
-        "type": "template",
-        "payload": {
-          "template_type": "generic",
-          "elements": [{
-            "title":"Hi {{user_first_name}}!",
-            "subtitle": "I'm Duber. I can help you find people with answers to your questions.",
-            "buttons": [
-              {
-                "type": "postback",
-                "title": "Complete my Profile",
-                "payload": "PAYLOAD_COMPLETE_MY_PROFILE",
-              }
-            ],
-          }]
-        }
-      }
-    }
+  if (payload === 'GET_STARTED_PAYLOAD') {
+      let user_first_name 
 
-  }
+      request({
+        'url': userPublicProfile,
+        'json':true
+      }, function(error, res, body){
+        if(error){
+          console.log("Error fetching username " + error)
+        }
+        else {
+
+          console.log("Username is : " + body.first_name)
+          user_first_name = body.first_name
+          
+          response = {
+            "attachment": {
+              "type": "template",
+              "payload": {
+                "template_type": "generic",
+                "elements": [{
+                  "title": 'Hi ' + user_first_name,
+                  "subtitle": "I'm Duber. I can help you find people with answers to your questions.",
+                  "buttons": [
+                    {
+                      "type": "postback",
+                      "title": "Complete my Profile",
+                      "payload": "PAYLOAD_COMPLETE_MY_PROFILE",
+                    }
+                  ],
+                }]
+              }
+            }
+          } 
+          // Send the message to acknowledge the postback        
+          callSendAPI(sender_psid, response);
+        }
+
+      });
+
+    }
   
   else if (payload === 'PAYLOAD_COMPLETE_MY_PROFILE') {
     response = setUserProfile(sender_psid)
+    
+    // Send the message to acknowledge the postback
+    callSendAPI(sender_psid, response);
   }
-
-  // Send the message to acknowledge the postback
-  callSendAPI(sender_psid, response);
 }
 
 function callSendAPI(sender_psid, response) {
