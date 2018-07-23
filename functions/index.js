@@ -157,6 +157,9 @@ if (payload === 'GET_STARTED_PAYLOAD') {
     response = setUserProfile(sender_psid)
   }
 
+  else if (payload === 'PAYLOAD_EDIT_PROFILE') {
+    response = editUserProfile(sender_psid)
+  }
   // Send the message to acknowledge the postback
   callSendAPI(sender_psid, response);
 }
@@ -206,5 +209,27 @@ function setUserProfile(sender_psid) {
 
   return response;
 }
+
+// function editUserProfile(sender_psid) {
+//   console.log("Duber log: In function: Edit User Profile");
+//   let response = {
+//       "attachment": {
+//           "type": "template",
+//           "payload": {
+//               "template_type": "button",
+//               "text": "OK, let's edit your Profile",
+//               "buttons": [{
+//                   "type": "web_url",
+//                   "url": SERVER_URL + "/profile",
+//                   "title": "Set Profile",
+//                   "webview_height_ratio": "compact",
+//                   "messenger_extensions": true
+//               }]
+//           }
+//       }
+//   };
+
+//   return response;
+// }
 
 exports.app = functions.https.onRequest(app);
