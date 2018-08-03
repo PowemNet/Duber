@@ -24,7 +24,7 @@ payload:
          {
           "title":"Edit Profile",
           "type":"postback",
-          "payload":"PAYLOAD_EDIT_PROFILE"
+          "payload":"PAYLOAD_EDIT_MY_PROFILE"
         }
       ]
     }
